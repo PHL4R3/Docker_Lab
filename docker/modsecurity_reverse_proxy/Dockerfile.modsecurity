@@ -1,0 +1,14 @@
+# Use an official ModSecurity-enabled Nginx image as the base image
+FROM owasp/modsecurity:nginx
+
+# Copy your ModSecurity configuration file
+COPY modsecurity.conf /etc/modsecurity/modsecurity.conf
+
+# Copy your Nginx configuration file
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose the port of your choice (e.g., 8080)
+EXPOSE 8080
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,32 @@
+
+networks:
+  dvwa_network:
+    driver: bridge
+services:
+  dvwa: 
+    image: vulnerables/web-dvwa
+    ports:
+      - "8080"
+    networks:
+      - dvwa_network
+    container_name: dvwa
+  https_reverse_proxy:
+    build:
+      context: ./https_reverse_proxy
+      dockerfile: Dockerfile.https
+    ports:
+      - "443:443"
+    depends_on:
+      - dvwa
+    networks:
+      - dvwa_network
+  modsecurity_reverse_proxy:
+    build:
+      context: ./modsecurity_reverse_proxy
+      dockerfile: Dockerfile.modsecurity
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dvwa
+    networks:
+      - dvwa_network
